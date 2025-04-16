@@ -1,0 +1,48 @@
+server:
+  port: 7070
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth-service
+    username: postgres
+    password: qaz123wsx
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        enabled: true
+        register: true
+        prefer-ip-address: true
+
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: rate-limit-cache
+      url: /api/v1/auth/login
+      strategy: first
+      rate-limits:
+        - bandwidths:
+            - capacity: 5
+              time: 10
+              unit: minute
+
+jwt:
+  secret: a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
+  expiration: 604800 # 7 days in seconds
+  refresh-expiration: 2592000 # 30 days in seconds
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+  api-docs:
+    path: /api-docs
