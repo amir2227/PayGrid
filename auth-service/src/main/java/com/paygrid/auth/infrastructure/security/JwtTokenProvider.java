@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -33,7 +34,7 @@ public class JwtTokenProvider {
     }
 
     public String generateAccessToken(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         String authorities = authentication.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
@@ -42,8 +43,8 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + expiration * 1000);
 
         return Jwts.builder()
-                .setSubject(user.getId())
-                .claim("email", user.getEmail())
+                .setSubject(userPrincipal.getUser().getId())
+                .claim("email", userPrincipal.getUser().getEmail())
                 .claim("roles", authorities)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)

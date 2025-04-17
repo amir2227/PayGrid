@@ -24,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -72,12 +73,13 @@ public class AuthServiceImpl implements AuthService {
                 Set.of(defaultRole)
         );
         User savedUser = userRepository.save(user);
-        eventPublisher.publishEvent(new UserRegisteredEvent(savedUser.getId(), savedUser.getEmail()));
+        eventPublisher.publishEvent(new UserRegisteredEvent(UUID.fromString(savedUser.getId()), savedUser.getEmail()));
 
     }
 
     @Override
     public AuthResponse refreshAccessToken(String refreshToken) {
+        jwtTokenProvider.validateToken(refreshToken);
         String userId = jwtTokenProvider.getUserIdFromToken(refreshToken);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UnAuthorizedException("Invalid refresh token"));
