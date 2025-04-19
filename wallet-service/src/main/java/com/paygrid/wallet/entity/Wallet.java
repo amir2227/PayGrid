@@ -43,9 +43,6 @@ public class Wallet {
     @OneToOne(mappedBy = "wallet",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private WalletMetadata metadata;
 
-    @Version
-    private Long version; // optimistic locking for safe concurrent updates
-
     @CreationTimestamp
     private OffsetDateTime createdAt;
     @UpdateTimestamp

@@ -10,7 +10,6 @@ import java.util.UUID;
 @Data
 @Builder
 public class WalletCreateRequest {
-    private UUID userId;
     private CurrencyType currencyType;
     private CurrencyCode currencyCode;
 

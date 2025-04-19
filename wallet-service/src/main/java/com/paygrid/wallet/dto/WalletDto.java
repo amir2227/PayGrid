@@ -19,4 +19,5 @@ public class WalletDto {
     private BigDecimal available;
     private BigDecimal frozen;
     private WalletStatus status;
+    private WalletMetadataDto metadata;
 }

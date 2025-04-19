@@ -1,9 +1,19 @@
 server:
-  port: 0
+  port: 7171
 
 spring:
   application:
-    name: user-service
+    name: wallet-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/wallet-service
+    username: postgres
+    password: qaz123wsx
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   cloud:
     consul:
       host: localhost
@@ -12,3 +22,9 @@ spring:
         enabled: true
         register: true
         prefer-ip-address: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+  api-docs:
+    path: /api-docs
